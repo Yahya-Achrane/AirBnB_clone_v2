@@ -8,6 +8,10 @@ class FileStorage:
     __file_path = 'file.json'
     __objects = {}
 
+    @property
+    def cities(self):
+        """Retruns Cities in state"""
+
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
         print_dict = {}
