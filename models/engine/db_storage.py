@@ -17,12 +17,12 @@ class DBStorage:
     __session = None
 
     def __init__(self):
-        """Function Docs"""
-        hb_user = getenv("HBNB_MYSQL_USER")
-        hb_pwd = getenv("HBNB_MYSQL_PWD")
-        hb_host = getenv("HBNB_MYSQL_HOST")
-        hb_db = getenv("HBNB_MYSQL_DB")
-        hb_env = getenv("HBNB_ENV")
+         """Initializes the SQL database storage"""
+        user = os.getenv('HBNB_MYSQL_USER')
+        pword = os.getenv('HBNB_MYSQL_PWD')
+        host = os.getenv('HBNB_MYSQL_HOST')
+        db_name = os.getenv('HBNB_MYSQL_DB')
+        env = os.getenv('HBNB_ENV')
 
         DATABASE_URL = "mysql+mysqldb://{}:{}@{}:3306/{}".format(
             user, pword, host, db_name
