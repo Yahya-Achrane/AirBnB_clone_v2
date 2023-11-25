@@ -1,37 +1,32 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
-
-from models.base_model import BaseModel, Base
+import os
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
-from models.city import City
-from os import getenv
-from models import storage_type
 
+from models.base_model import BaseModel, Base
+from models.city import City
 
 
 class State(BaseModel, Base):
     """ State class """
-
-
-    if storage_type == "db":
-        __tablename__ = 'states'
-        name = Column(String(128), nullable=False)
-        cities = relationship('City', cascade="all,delete", backref="state")
+    __tablename__ = 'states'
+    name = Column(
+        String(128), nullable=False
+    ) if os.getenv('HBNB_TYPE_STORAGE') == 'db' else ''
+    if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+        cities = relationship(
+            'City',
+            cascade='all, delete, delete-orphan',
+            backref='state'
+        )
     else:
-        name = ""
-        # DONE: for FileStorage: getter attribute cities that
-        # returns the list of City instances with state_id equals
-        # to the current State.id => It will be the FileStorage
-        # relationship between State and City
-
         @property
         def cities(self):
-            """getter docuemnt"""
-            citiesList = []
-            citiesAll = storage.all(City)
-            for city in citiesAll.values():
-                if city.state_id == self.id:
-                    citiesList.append(city)
-            return citiesList
-
+            """Returns the cities in this State"""
+            from models import storage
+            cities_in_state = []
+            for value in storage.all(City).values():
+                if value.state_id == self.id:
+                    cities_in_state.append(value)
+            return cities_in_state
