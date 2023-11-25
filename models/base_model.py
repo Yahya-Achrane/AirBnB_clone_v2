@@ -24,8 +24,7 @@ class BaseModel:
         if kwargs:
             for key, value in kwargs.items():
                 if key in ["created_at", "updated_at"]:
-                    date = datetime.datetime.strptime(
-                        value, "%Y-%m-%dT%H:%M:%S.%f")
+                    date = datetime.fromisoformat(value)
                     exec("self.{} = {}".format(key, repr(date)))
                 elif key != "__class__":
                     exec("self.{} = {}".format(key, repr(value)))
